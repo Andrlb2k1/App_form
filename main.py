@@ -56,7 +56,7 @@ l_tel.place(x=10, y=130)
 e_tel = Entry(frame_baixo, width=45, justify="left", relief="solid")
 e_tel.place(x=15, y=160)
 
-# Data da Consulta
+# Data da consulta
 l_cal = Label(frame_baixo, text="Data da consulta *", anchor=NW, font=("Ivy 10 bold"), bg=co1, fg=co4, relief="flat")
 l_cal.place(x=15, y=190)
 e_cal = DateEntry(frame_baixo, width=12, bg="darkblue", fg="white", borderwidth=2, date_pattern="dd/mm/y")
@@ -73,5 +73,18 @@ l_sobre = Label(frame_baixo, text="Informação extra", anchor=NW, font=("Ivy 10
 l_sobre.place(x=15, y=260)
 e_sobre = Entry(frame_baixo, width=45, justify="left", relief="solid")
 e_sobre.place(x=15, y=290)
+
+# Botões
+# Botão de inserir
+b_inserir = Button(frame_baixo, text="Inserir", width=10, font=("Ivy 9 bold"), bg=co6, fg=co1, relief="raised", overrelief="ridge")
+b_inserir.place(x=15, y=340)
+
+# Botão de atualizar
+b_atualizar = Button(frame_baixo, text="Atualizar", width=10, font=("Ivy 9 bold"), bg=co2, fg=co1, relief="raised", overrelief="ridge")
+b_atualizar.place(x=110, y=340)
+
+# Botão de deletar
+b_deletar = Button(frame_baixo, text="Deletar", width=10, font=("Ivy 9 bold"), bg=co7, fg=co1, relief="raised", overrelief="ridge")
+b_deletar.place(x=205, y=340)
 
 janela.mainloop()
