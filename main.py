@@ -1,6 +1,9 @@
 # Importando o Tkinter
 from tkinter import *
 
+# Importando o ttk
+from tkinter import ttk
+
 # Importando o Tkcalendar
 from tkcalendar import Calendar, DateEntry
 
@@ -87,4 +90,43 @@ b_atualizar.place(x=110, y=340)
 b_deletar = Button(frame_baixo, text="Deletar", width=10, font=("Ivy 9 bold"), bg=co7, fg=co1, relief="raised", overrelief="ridge")
 b_deletar.place(x=205, y=340)
 
+# Frame Tree
+lista = [[1, "André Luiz Bristot", "andre123@gmail.com", 123456789, "27/03/2026", "Normal", "Gostaria de o consultar pessoalmente"],
+         [2, "André Luiz Bristot", "andre123@gmail.com", 123456789, "27/03/2026", "Normal", "Gostaria de o consultar pessoalmente"],
+         [3, "André Luiz Bristot", "andre123@gmail.com", 123456789, "27/03/2026", "Normal", "Gostaria de o consultar pessoalmente"],
+         [4, "André Luiz Bristot", "andre123@gmail.com", 123456789, "27/03/2026", "Normal", "Gostaria de o consultar pessoalmente"]]
+
+# Lista para cabeçalho
+tabela_head = ["Id", "Nome", "Email", "Telefone", "Data", "Estado", "Sobre"]
+
+# Criando a tabela
+tree = ttk.Treeview(frame_direita, selectmode="extended", columns=tabela_head, show="headings")
+
+# Vertical Scrollbar
+vsb = ttk.Scrollbar(frame_direita, orient="vertical", command=tree.yview)
+
+# Horizontal Scrollbar
+hsb = ttk.Scrollbar(frame_direita, orient="horizontal", command=tree.xview)
+
+tree.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+
+tree.grid(column=0, row=0, sticky='nsew')
+vsb.grid(column=1, row=0, sticky='ns')
+hsb.grid(column=0, row=1, sticky='ew')
+
+frame_direita.grid_rowconfigure(0, weight=12)
+
+hd=["nw", "nw", "nw", "nw", "nw", "center", "center"]
+h=[30, 170, 140, 100, 120, 50, 100]
+n=0
+
+for col in tabela_head:
+    tree.heading(col, text=col.title(), anchor=CENTER)
+    tree.column(col, width=h[n], anchor=hd[n])
+    n+=1
+
+for item in lista:
+    tree.insert("", "end", values=item)
+
+# Visualizar a janela
 janela.mainloop()
