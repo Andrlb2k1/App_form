@@ -26,17 +26,15 @@ def mostrar_info():
     return lista
 
 # Atualizar informações
-lista = ["André Bristot", 1]
-
-with con:
-    cur = con.cursor()
-    query = "UPDATE formulario SET nome=? WHERE id=?"
-    cur.execute(query, lista)
+def atualizar_info(i):
+    with con:
+        cur = con.cursor()
+        query = "UPDATE formulario SET nome=?, email=?, telefone=?, data=?, estado=?, assunto=? WHERE id=?"
+        cur.execute(query, i)
 
 # Deletar informações
-lista = [1]
-
-with con:
-    cur = con.cursor()
-    query = "DELETE FROM formulario WHERE id=?"
-    cur.execute(query, lista)
+def deletar_info(i):    
+    with con:
+        cur = con.cursor()
+        query = "DELETE FROM formulario WHERE id=?"
+        cur.execute(query, i)

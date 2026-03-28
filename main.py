@@ -46,6 +46,9 @@ frame_direita.grid(row=0, column=1, rowspan=2, padx=1, pady=0, sticky=NSEW)
 app_nome = Label(frame_cima, text="Formulário de Consultoria", anchor=NW, font=("Ivy 13 bold"), width=310, height=50, bg=co2, fg=co1, relief="flat")
 app_nome.place(x=10, y=20)
 
+# Variável "tree" global
+global tree
+
 # Função "inserir"
 def inserir():
     nome = e_nome.get()
@@ -82,6 +85,94 @@ def inserir():
         widget.destroy()
 
     mostrar()
+
+# Função "atualizar"
+def atualizar():
+    try:
+        treev_dados = tree.focus()
+        treev_dicionario = tree.item(treev_dados)
+        tree_lista = treev_dicionario["values"]
+
+        valor_id = tree_lista[0]
+
+        e_nome.delete(0, "end")
+        e_email.delete(0, "end")
+        e_tel.delete(0, "end")
+        e_cal.delete(0, "end")
+        e_estado.delete(0, "end")
+        e_sobre.delete(0, "end")
+
+        e_nome.insert(0, tree_lista[1])
+        e_email.insert(0, tree_lista[2])
+        e_tel.insert(0, tree_lista[3])
+        e_cal.insert(0, tree_lista[4])
+        e_estado.insert(0, tree_lista[5])
+        e_sobre.insert(0, tree_lista[6])
+
+        def update():
+            nome = e_nome.get()
+            email = e_email.get()
+            telefone = e_tel.get()
+            data = e_cal.get()
+            estado = e_estado.get()
+            sobre = e_sobre.get()
+
+            lista = [nome, email, telefone, data, estado, sobre, valor_id]
+
+            if nome == "":
+                messagebox.showerror("Erro!", "O nome deve ser preenchido!")
+            elif email == "":
+                messagebox.showerror("Erro!", "O email deve ser preenchido!")
+            elif telefone == "":
+                messagebox.showerror("Erro!", "O telefone deve ser preenchido!")
+            elif data == "":
+                messagebox.showerror("Erro!", "A data da consulta deve ser preenchida!")
+            elif estado == "":
+                messagebox.showerror("Erro!", "O estado da consulta deve ser preenchido!")
+            else:
+                atualizar_info(lista)
+                messagebox.showinfo("Sucesso!", "Os dados foram atualizados com sucesso!")
+            
+            e_nome.delete(0, "end")
+            e_email.delete(0, "end")
+            e_tel.delete(0, "end")
+            e_cal.delete(0, "end")
+            e_estado.delete(0, "end")
+            e_sobre.delete(0, "end")
+
+            b_confirmar.destroy()
+
+            for widget in frame_direita.winfo_children():
+                widget.destroy()
+
+            mostrar()
+
+        # Botão para confirmar a atualização
+        b_confirmar = Button(frame_baixo, command=update, text="Confirmar", width=10, font=("Ivy 7 bold"), bg=co2, fg=co1, relief="raised", overrelief="ridge")
+        b_confirmar.place(x=110, y=370)
+
+    except IndexError:
+        messagebox.showerror("Erro!", "Selecione um dado na tabela para atualizar!")
+
+# Função "deletar"
+def deletar():
+    try:
+        treev_dados = tree.focus()
+        treev_dicionario = tree.item(treev_dados)
+        tree_lista = treev_dicionario["values"]
+
+        valor_id = [tree_lista[0]]
+
+        deletar_info(valor_id)
+        messagebox.showinfo("Sucesso!", "Os dados foram deletados com sucesso!")
+
+        for widget in frame_direita.winfo_children():
+            widget.destroy()
+
+        mostrar()
+
+    except IndexError:
+        messagebox.showerror("Erro!", "Selecione um dado na tabela para deletar!")
 
 # Configurando o frame de baixo
 # Nome
@@ -126,15 +217,17 @@ b_inserir = Button(frame_baixo, command=inserir, text="Inserir", width=10, font=
 b_inserir.place(x=15, y=340)
 
 # Botão para atualizar
-b_atualizar = Button(frame_baixo, text="Atualizar", width=10, font=("Ivy 9 bold"), bg=co2, fg=co1, relief="raised", overrelief="ridge")
+b_atualizar = Button(frame_baixo, command=atualizar, text="Atualizar", width=10, font=("Ivy 9 bold"), bg=co2, fg=co1, relief="raised", overrelief="ridge")
 b_atualizar.place(x=110, y=340)
 
 # Botão para deletar
-b_deletar = Button(frame_baixo, text="Deletar", width=10, font=("Ivy 9 bold"), bg=co7, fg=co1, relief="raised", overrelief="ridge")
+b_deletar = Button(frame_baixo, command=deletar, text="Deletar", width=10, font=("Ivy 9 bold"), bg=co7, fg=co1, relief="raised", overrelief="ridge")
 b_deletar.place(x=205, y=340)
 
 # Frame Tree
 def mostrar():
+    global tree
+
     lista = mostrar_info()
 
     # Lista para cabeçalho
