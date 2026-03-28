@@ -5,20 +5,25 @@ import sqlite3 as lite
 con = lite.connect('dados.db')
 
 # Inserir informações
-lista = ["André Luiz Bristot", "andre123@gmail.com", 123456789, "27/03/2026", "Normal", "Gostaria de o consultar pessoalmente"]
-
-with con:
-    cur = con.cursor()
-    query = "INSERT INTO formulario (nome, email, telefone, data, estado, assunto) VALUES (?, ?, ?, ?, ?, ?)"
-    cur.execute(query, lista)
+def inserir_info(i):
+    with con:
+        cur = con.cursor()
+        query = "INSERT INTO formulario (nome, email, telefone, data, estado, assunto) VALUES (?, ?, ?, ?, ?, ?)"
+        cur.execute(query, i)
 
 # Acessar informações
-with con:
-    cur = con.cursor()
-    query = "SELECT * FROM formulario"
-    cur.execute(query)
-    info = cur.fetchall()
-    print(info)
+def mostrar_info():
+    lista = []
+    with con:
+        cur = con.cursor()
+        query = "SELECT * FROM formulario"
+        cur.execute(query)
+        informacao = cur.fetchall()
+
+        for i in informacao:
+           lista.append(i)
+    
+    return lista
 
 # Atualizar informações
 lista = ["André Bristot", 1]

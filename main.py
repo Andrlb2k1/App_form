@@ -4,8 +4,14 @@ from tkinter import *
 # Importando o ttk
 from tkinter import ttk
 
+# Importando o messagebox
+from tkinter import messagebox
+
 # Importando o Tkcalendar
 from tkcalendar import Calendar, DateEntry
+
+# Importando a "view"
+from view import *
 
 # Cores
 co0 = "#f0f3f5"  # Branca 1
@@ -39,6 +45,43 @@ frame_direita.grid(row=0, column=1, rowspan=2, padx=1, pady=0, sticky=NSEW)
 # Label de cima
 app_nome = Label(frame_cima, text="Formulário de Consultoria", anchor=NW, font=("Ivy 13 bold"), width=310, height=50, bg=co2, fg=co1, relief="flat")
 app_nome.place(x=10, y=20)
+
+# Função "inserir"
+def inserir():
+    nome = e_nome.get()
+    email = e_email.get()
+    telefone = e_tel.get()
+    data = e_cal.get()
+    estado = e_estado.get()
+    sobre = e_sobre.get()
+
+    lista = [nome, email, telefone, data, estado, sobre]
+
+    if nome == "":
+        messagebox.showerror("Erro!", "O nome deve ser preenchido!")
+    elif email == "":
+        messagebox.showerror("Erro!", "O email deve ser preenchido!")
+    elif telefone == "":
+        messagebox.showerror("Erro!", "O telefone deve ser preenchido!")
+    elif data == "":
+        messagebox.showerror("Erro!", "A data da consulta deve ser preenchida!")
+    elif estado == "":
+        messagebox.showerror("Erro!", "O estado da consulta deve ser preenchido!")
+    else:
+        inserir_info(lista)
+        messagebox.showinfo("Sucesso!", "Os dados foram inseridos com sucesso!")
+    
+    e_nome.delete(0, "end")
+    e_email.delete(0, "end")
+    e_tel.delete(0, "end")
+    e_cal.delete(0, "end")
+    e_estado.delete(0, "end")
+    e_sobre.delete(0, "end")
+
+    for widget in frame_direita.winfo_children():
+        widget.destroy()
+
+    mostrar()
 
 # Configurando o frame de baixo
 # Nome
@@ -78,55 +121,56 @@ e_sobre = Entry(frame_baixo, width=45, justify="left", relief="solid")
 e_sobre.place(x=15, y=290)
 
 # Botões
-# Botão de inserir
-b_inserir = Button(frame_baixo, text="Inserir", width=10, font=("Ivy 9 bold"), bg=co6, fg=co1, relief="raised", overrelief="ridge")
+# Botão para inserir
+b_inserir = Button(frame_baixo, command=inserir, text="Inserir", width=10, font=("Ivy 9 bold"), bg=co6, fg=co1, relief="raised", overrelief="ridge")
 b_inserir.place(x=15, y=340)
 
-# Botão de atualizar
+# Botão para atualizar
 b_atualizar = Button(frame_baixo, text="Atualizar", width=10, font=("Ivy 9 bold"), bg=co2, fg=co1, relief="raised", overrelief="ridge")
 b_atualizar.place(x=110, y=340)
 
-# Botão de deletar
+# Botão para deletar
 b_deletar = Button(frame_baixo, text="Deletar", width=10, font=("Ivy 9 bold"), bg=co7, fg=co1, relief="raised", overrelief="ridge")
 b_deletar.place(x=205, y=340)
 
 # Frame Tree
-lista = [[1, "André Luiz Bristot", "andre123@gmail.com", 123456789, "27/03/2026", "Normal", "Gostaria de o consultar pessoalmente"],
-         [2, "André Luiz Bristot", "andre123@gmail.com", 123456789, "27/03/2026", "Normal", "Gostaria de o consultar pessoalmente"],
-         [3, "André Luiz Bristot", "andre123@gmail.com", 123456789, "27/03/2026", "Normal", "Gostaria de o consultar pessoalmente"],
-         [4, "André Luiz Bristot", "andre123@gmail.com", 123456789, "27/03/2026", "Normal", "Gostaria de o consultar pessoalmente"]]
+def mostrar():
+    lista = mostrar_info()
 
-# Lista para cabeçalho
-tabela_head = ["Id", "Nome", "Email", "Telefone", "Data", "Estado", "Sobre"]
+    # Lista para cabeçalho
+    tabela_head = ["Id", "Nome", "Email", "Telefone", "Data", "Estado", "Sobre"]
 
-# Criando a tabela
-tree = ttk.Treeview(frame_direita, selectmode="extended", columns=tabela_head, show="headings")
+    # Criando a tabela
+    tree = ttk.Treeview(frame_direita, selectmode="extended", columns=tabela_head, show="headings")
 
-# Vertical Scrollbar
-vsb = ttk.Scrollbar(frame_direita, orient="vertical", command=tree.yview)
+    # Vertical Scrollbar
+    vsb = ttk.Scrollbar(frame_direita, orient="vertical", command=tree.yview)
 
-# Horizontal Scrollbar
-hsb = ttk.Scrollbar(frame_direita, orient="horizontal", command=tree.xview)
+    # Horizontal Scrollbar
+    hsb = ttk.Scrollbar(frame_direita, orient="horizontal", command=tree.xview)
 
-tree.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+    tree.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
 
-tree.grid(column=0, row=0, sticky='nsew')
-vsb.grid(column=1, row=0, sticky='ns')
-hsb.grid(column=0, row=1, sticky='ew')
+    tree.grid(column=0, row=0, sticky='nsew')
+    vsb.grid(column=1, row=0, sticky='ns')
+    hsb.grid(column=0, row=1, sticky='ew')
 
-frame_direita.grid_rowconfigure(0, weight=12)
+    frame_direita.grid_rowconfigure(0, weight=12)
 
-hd=["nw", "nw", "nw", "nw", "nw", "center", "center"]
-h=[30, 170, 140, 100, 120, 50, 100]
-n=0
+    hd=["nw", "nw", "nw", "nw", "nw", "center", "center"]
+    h=[30, 170, 140, 100, 120, 50, 100]
+    n=0
 
-for col in tabela_head:
-    tree.heading(col, text=col.title(), anchor=CENTER)
-    tree.column(col, width=h[n], anchor=hd[n])
-    n+=1
+    for col in tabela_head:
+        tree.heading(col, text=col.title(), anchor=CENTER)
+        tree.column(col, width=h[n], anchor=hd[n])
+        n+=1
 
-for item in lista:
-    tree.insert("", "end", values=item)
+    for item in lista:
+        tree.insert("", "end", values=item)
+
+# Chamando a função "mostrar"
+mostrar()
 
 # Visualizar a janela
 janela.mainloop()
