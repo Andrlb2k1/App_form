@@ -149,7 +149,7 @@ def atualizar():
 
         # Botão para confirmar a atualização
         b_confirmar = Button(frame_baixo, command=update, text="Confirmar", width=10, font=("Ivy 7 bold"), bg=co2, fg=co1, relief="raised", overrelief="ridge")
-        b_confirmar.place(x=110, y=370)
+        b_confirmar.place(x=115, y=370)
 
     except IndexError:
         messagebox.showerror("Erro!", "Selecione um dado na tabela para atualizar!")
